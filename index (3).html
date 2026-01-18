@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Samsung Galaxy S25 Ultra — Presentation</title>
+  <meta name="description"
+    content="Apple-like scroll presentation landing for Samsung Galaxy S25 Ultra (student project)." />
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: #0b0d12;
+      --text: #f5f7ff;
+      --muted: rgba(245, 247, 255, .72);
+      --glass: rgba(255, 255, 255, .06);
+      --glass2: rgba(255, 255, 255, .10);
+      --stroke: rgba(255, 255, 255, .12);
+      --shadow: 0 20px 80px rgba(0, 0, 0, .55);
+      --radius: 22px;
+      --max: 1100px;
+      --pad: clamp(18px, 3vw, 34px);
+      --h1: clamp(44px, 7vw, 86px);
+      --h2: clamp(28px, 4vw, 46px);
+      --p: clamp(15px, 1.5vw, 18px);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(1200px 800px at 60% 20%, rgba(120, 170, 255, .10), transparent 55%),
+        radial-gradient(900px 600px at 30% 70%, rgba(190, 120, 255, .08), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.35;
+      overflow-x: hidden;
+    }
+
+    /* Основной контент растягивается */
+    main {
+      scroll-snap-type: none;
+      flex: 1 0 auto;
+      scroll-snap-type: y mandatory;
+      display: flex;
+      flex-direction: column;
+    }
+
+    section {
+      flex: 0 0 100vh;
+      /* жёсткая высота 100vh */
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: clamp(50px, 10vh, 120px) var(--pad);
+      position: relative;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* --- Top nav (sticky) --- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(5, 6, 8, .70), rgba(5, 6, 8, .35));
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .nav__inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px var(--pad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: .2px;
+      font-weight: 650;
+      user-select: none;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(120, 170, 255, .9), rgba(190, 120, 255, .9));
+      box-shadow: 0 0 0 4px rgba(120, 170, 255, .10);
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      transition: .18s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .nav__right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255, 255, 255, .06);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: .18s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .25);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, .10);
+    }
+
+    .btn--primary {
+      border-color: rgba(120, 170, 255, .35);
+      background: linear-gradient(135deg, rgba(120, 170, 255, .25), rgba(190, 120, 255, .18));
+    }
+
+    /* --- Scroll presentation layout --- */
+    main {
+      scroll-snap-type: y mandatory;
+    }
+
+    section {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: clamp(50px, 10vh, 120px) var(--pad);
+      position: relative;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* --- Panels / content grids --- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: clamp(18px, 3vw, 34px);
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav__right a {
+        display: none;
+      }
+
+      /* keep it clean on mobile */
+    }
+
+    .kicker {
+      color: rgba(245, 247, 255, .80);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: .18em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: var(--h1);
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: var(--h2);
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: var(--p);
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .lead {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: rgba(245, 247, 255, .82);
+    }
+
+    .card {
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Placeholder “phone” visual */
+    .heroVisual {
+      height: clamp(490px, 75vh, 750px);
+      width: clamp(500px, 80vh, 850px);
+      border-radius: 36px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background:
+        radial-gradient(800px 520px at 50% 20%, rgba(120, 170, 255, .30), transparent 55%),
+        radial-gradient(650px 450px at 40% 80%, rgba(190, 120, 255, .22), transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02));
+      box-shadow: 0 30px 120px rgba(0, 0, 0, .60);
+      isolation: isolate;
+    }
+
+    .heroVisual:before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 30px;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, .10), transparent 45%),
+        radial-gradient(700px 500px at 30% 40%, rgba(255, 255, 255, .10), transparent 60%),
+        rgba(0, 0, 0, .35);
+      border: 1px solid rgba(255, 255, 255, .10);
+      z-index: 0;
+    }
+
+    .heroVisual:after {
+      content: "S25 ULTRA";
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      font-size: 12px;
+      color: rgba(245, 247, 255, .70);
+      z-index: 1;
+    }
+
+    .lens {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 32px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .14);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .cam {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .25), transparent 40%),
+        radial-gradient(circle at 60% 60%, rgba(120, 170, 255, .25), transparent 45%),
+        rgba(0, 0, 0, .55);
+    }
+
+    .chip {
+      position: absolute;
+      left: 28px;
+      top: 28px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background: rgba(255, 255, 255, .06);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+      font-size: 13px;
+      color: rgba(245, 247, 255, .85);
+    }
+
+    /* Feature chips row */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(255, 255, 255, .05);
+      color: rgba(245, 247, 255, .82);
+      font-size: 13px;
+    }
+
+    /* Icon cards */
+    .cards3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .cards3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mini {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .mini h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: -.01em;
+    }
+
+    .mini p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* Split big statement */
+    .bigStatement {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .bigStatement .lead {
+      margin: 0 auto;
+      max-width: 720px;
+    }
+
+    /* Background accents per section */
+    .bgGlow {
+      position: absolute;
+      inset: -200px;
+      background: radial-gradient(900px 600px at var(--x, 50%) var(--y, 40%), rgba(120, 170, 255, .12), transparent 55%);
+      pointer-events: none;
+      opacity: .9;
+    }
+
+    .bgGlow.purple {
+      background: radial-gradient(900px 600px at var(--x, 40%) var(--y, 55%), rgba(190, 120, 255, .11), transparent 58%);
+    }
+
+    /* Footer */
+    footer {
+      scroll-snap-align: end;
+
+      padding: 28px var(--pad);
+      border-top: 1px solid var(--stroke);
+      background: rgba(0, 0, 0, .25);
+      color: rgba(245, 247, 255, .62);
+      font-size: 13px;
+
+      position: relative;
+      z-index: 10;
+    }
+
+    footer .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer a {
+      color: rgba(245, 247, 255, .75);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Smooth scrolling for anchor jumps */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Reduce motion support */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sticky navigation -->
+  <header class="nav">
+    <div class="nav__inner">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Galaxy S25 Ultra</span>
+      </div>
+
+      <nav class="nav__right" aria-label="Primary">
+        <a href="#design">Design</a>
+        <a href="#display">Display</a>
+        <a href="#ai">Galaxy AI</a>
+        <a href="#camera">Camera</a>
+        <a href="#s-pen">S Pen</a>
+        <a href="#ecosystem">Ecosystem</a>
+        <a href="#pricing">Pricing</a>
+        <a class="btn btn--primary" href="#pricing">Buy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="top">
+      <div class="bgGlow" style="--x:62%;--y:30%"></div>
+      <div class="wrap grid">
+        <div>
+          <div class="kicker">SMARTPHONE • ULTRA EXPERIENCE</div>
+          <h1>Galaxy S25 Ultra</h1>
+          <p class="lead">Intelligence and power combined — built for creativity, study, and work.</p>
+
+          <div class="chips">
+            <span class="pill">Titanium Design</span>
+            <span class="pill">Dynamic AMOLED 2X</span>
+            <span class="pill">Galaxy AI</span>
+            <span class="pill">200MP Pro Camera</span>
+            <span class="pill">S Pen built-in</span>
+          </div>
+
+          <div style="margin-top:22px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="btn btn--primary" href="#design">Learn more</a>
+            <a class="btn" href="#pricing">View pricing</a>
+          </div>
+
+        </div>
+
+        <div>
+          <div class="heroVisual" aria-label="Product visual placeholder" style="border:0;">
+            <video src="img/galaxy-s25-ultra-features-form-factor.webm" autoplay muted loop playsinline
+              style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0; border-radius:20px;">
+            </video>
+          </div>
+        </div>
+    </section>
+
+    <!-- BIG STATEMENT -->
+    <section>
+      <div class="bgGlow purple" style="--x:35%;--y:55%"></div>
+      <div class="wrap bigStatement">
+        <div class="kicker">THE VISION</div>
+        <h2>One smartphone instead of a camera, notebook, and computer.</h2>
+        <p class="lead">
+          Create faster. Work smarter. Capture brighter moments. All in your pocket.
+        </p>
+        <div class="cards3">
+          <div class="mini">
+            <h3>For creators</h3>
+            <p>Photo, video, editing, and publishing — faster and easier.</p>
+          </div>
+          <div class="mini">
+            <h3>For students</h3>
+            <p>Notes, summaries, translation, and task organization.</p>
+          </div>
+          <div class="mini">
+            <h3>For professionals</h3>
+            <p>Multitasking, security, and device ecosystem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN -->
+    <section id="design">
+      <div class="bgGlow" style="--x:70%;--y:40%"></div>
+      <div class="wrap grid">
+        <div>
+          <div class="kicker">DESIGN</div>
+          <h2>Designed to last.</h2>
+          <p class="lead">Titanium. Sharp edges. A premium feel from the first touch.</p>
+          <p>Minimalist style combined with durable materials — a device that looks premium and handles real everyday
+            use.</p>
+
+          <div class="chips">
+            <span class="pill">Titanium frame</span>
+            <span class="pill">Protected glass</span>
+            <span class="pill">Premium finish</span>
+          </div>
+        </div>
+
+        <div class="card" style="padding:3px;">
+          <div style="
+  position:relative;
+    border-radius:18px;
+    height:550px;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 420px at 40% 25%, rgba(255,255,255,.16), transparent 60%),
+      linear-gradient(135deg, rgba(120,170,255,.16), rgba(190,120,255,.10)),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <img src="img/file.jpg" alt="" style="
+           width:100%;
+           height:100%;
+           object-fit:cover;
+           border-radius:18px;
+           position:absolute;
+           inset:0;
+         ">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DISPLAY -->
+    <section id="display">
+      <div class="bgGlow purple" style="--x:30%;--y:35%"></div>
+      <div class="wrap grid">
+        <div>
+          <div class="kicker">DISPLAY</div>
+          <h2>A display that adapts to you.</h2>
+          <p class="lead">6.8-inch Dynamic AMOLED 2X — smooth, bright, and detailed.</p>
+          <div class="cards3">
+            <div class="mini">
+              <h3>QHD+</h3>
+              <p>Sharp visuals for video and text.</p>
+            </div>
+            <div class="mini">
+              <h3>1–120 Hz</h3>
+              <p>Smooth scrolling with power efficiency.</p>
+            </div>
+            <div class="mini">
+              <h3>Outdoor-ready</h3>
+              <p>Comfortable even in bright sunlight.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:3px;">
+          <div style="
+  position:relative;
+    border-radius:18px;
+    height:550px;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 420px at 40% 25%, rgba(255,255,255,.16), transparent 60%),
+      linear-gradient(135deg, rgba(120,170,255,.16), rgba(190,120,255,.10)),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <img src="img/galaxy-s25-ultra-features-sustainability-mo.jpg" alt="" style="
+           width:100%;
+           height:100%;
+           object-fit:cover;
+           border-radius:18px;
+           position:absolute;
+           inset:0;
+         ">
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section id="ai">
+      <div class="bgGlow" style="--x:60%;--y:40%"></div>
+      <div class="wrap">
+        <div class="bigStatement">
+          <div class="kicker">GALAXY AI</div>
+          <h2>AI that truly helps every day.</h2>
+          <p class="lead">Translation, smart notes, and photo enhancement — effortlessly.</p>
+        </div>
+
+        <div class="cards3" style="margin-top:26px;">
+          <div class="mini">
+            <h3>Live Translate</h3>
+            <p>Calls and messages understood by both sides.</p>
+          </div>
+          <div class="mini">
+            <h3>Smart Notes</h3>
+            <p>Summarize, rewrite, and organize notes.</p>
+          </div>
+          <div class="mini">
+            <h3>Photo Assist</h3>
+            <p>Clean shots and polished edits in seconds.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:10px; padding:3px;">
+          <div style="
+    border-radius:18px;
+    height:600px;
+    position:relative;
+    overflow:hidden;
+    background:
+      linear-gradient(135deg, rgba(120,170,255,.18), rgba(255,255,255,.04)),
+      radial-gradient(650px 320px at 80% 40%, rgba(190,120,255,.18), transparent 60%),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <video src="img/ai.webm" autoplay muted loop playsinline style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        position:absolute;
+        inset:0;
+        border-radius:18px;
+      ">
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CAMERA -->
+    <section id="camera">
+      <div class="bgGlow purple" style="--x:40%;--y:55%"></div>
+      <div class="wrap grid">
+        <div>
+          <div class="kicker">CAMERA</div>
+          <h2>A professional camera. In your pocket.</h2>
+          <p class="lead">200MP system — detail, zoom, and night shots.</p>
+          <div class="chips">
+            <span class="pill">200MP main</span>
+            <span class="pill">Optical zoom</span>
+            <span class="pill">Nightography</span>
+            <span class="pill">AI stabilization</span>
+          </div>
+          <p style="margin-top:12px;">Perfect for content: portraits, street, concerts, sports — sharp results every
+            time.</p>
+        </div>
+        <div class="card" style="padding:8px;">
+          <div style="
+    border-radius:18px;
+    height:420px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 420px at 50% 50%, rgba(255,255,255,.14), transparent 60%),
+      radial-gradient(700px 420px at 70% 30%, rgba(120,170,255,.18), transparent 60%),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <video src="img/video.webm" autoplay muted loop playsinline style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        position:absolute;
+        inset:0;
+        border-radius:18px;
+      ">
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- S PEN -->
+    <section id="s-pen">
+      <div class="bgGlow" style="--x:65%;--y:35%"></div>
+      <div class="wrap grid">
+        <div>
+          <div class="kicker">S PEN</div>
+          <h2>Creativity, built in.</h2>
+          <p class="lead">The S Pen is built in: write, draw, edit, and control with precision.</p>
+
+          <div class="cards3">
+            <div class="mini">
+              <h3>Notes</h3>
+              <p>Lectures, plans, and ideas — fast and neat.</p>
+            </div>
+            <div class="mini">
+              <h3>Editing</h3>
+              <p>Precise selection and edits for documents and photos.</p>
+            </div>
+            <div class="mini">
+              <h3>Control</h3>
+              <p>Great for presentations and creative work.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:3px;">
+          <div style="
+    border-radius:18px;
+    height:420px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 420px at 40% 30%, rgba(190,120,255,.18), transparent 60%),
+      linear-gradient(135deg, rgba(255,255,255,.06), rgba(0,0,0,.22)),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <img src="img/PEN-1.webp" alt="Hero image" style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        position:absolute;
+        inset:0;
+        border-radius:18px;
+      ">
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- ECOSYSTEM -->
+    <section id="ecosystem">
+      <div class="bgGlow purple" style="--x:35%;--y:40%"></div>
+      <div class="wrap">
+        <div class="bigStatement">
+          <div class="kicker">ECOSYSTEM</div>
+          <h2>One Galaxy system. Endless possibilities.</h2>
+          <p class="lead">Seamless sync, accessories, and phone-to-desktop mode.</p>
+        </div>
+
+        <div class="cards3" style="margin-top:26px;">
+          <div class="mini">
+            <h3>Samsung DeX</h3>
+            <p>Connect a display and get a desktop experience.</p>
+          </div>
+          <div class="mini">
+            <h3>Galaxy Watch</h3>
+            <p>Health, notifications, and productivity.</p>
+          </div>
+          <div class="mini">
+            <h3>SmartThings</h3>
+            <p>Control your smart home from one place.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px; padding:3px;">
+          <div style="
+    border-radius:18px;
+    height:420px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(700px 320px at 30% 55%, rgba(120,170,255,.18), transparent 60%),
+      radial-gradient(650px 320px at 80% 45%, rgba(190,120,255,.16), transparent 62%),
+      rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+  ">
+            <img src="img/gce_01_kv_pc1.webp" alt="Samsung ecosystem" style="
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    inset:0;
+    border-radius:18px;
+  ">
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="bgGlow" style="--x:55%;--y:35%"></div>
+      <div class="wrap">
+        <div class="bigStatement">
+          <div class="kicker">PRICING</div>
+          <h2>Choose your Galaxy S25 Ultra</h2>
+          <p class="lead">Configurations and starting price — update with official values if needed.</p>
+        </div>
+
+        <div class="cards3" style="margin-top:26px;">
+          <div class="card" style="padding:18px;">
+            <div class="kicker" style="margin:0 0 8px;">Base</div>
+            <h3 style="margin:0 0 6px;">12 GB / 256 GB</h3>
+            <p style="margin:0 0 14px;">from <strong style="color:var(--text)">$1299</strong></p>
+            <a class="btn btn--primary" href="#top">Buy</a>
+          </div>
+
+          <div class="card" style="padding:18px;">
+            <div class="kicker" style="margin:0 0 8px;">Plus</div>
+            <h3 style="margin:0 0 6px;">12 GB / 512 GB</h3>
+            <p style="margin:0 0 14px;">best for creators</p>
+            <a class="btn" href="#top">Buy</a>
+          </div>
+
+          <div class="card" style="padding:18px;">
+            <div class="kicker" style="margin:0 0 8px;">Max</div>
+            <h3 style="margin:0 0 6px;">16 GB / 1 TB</h3>
+            <p style="margin:0 0 14px;">ultimate storage</p>
+            <a class="btn" href="#top">Buy</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div>© 2026 Student Presentation • Galaxy S25 Ultra (concept page)</div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="#top">Back to top</a>
+        <a href="#design">Design</a>
+        <a href="#ai">Galaxy AI</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
